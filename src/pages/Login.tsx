@@ -1,6 +1,6 @@
-import './Login.css'
+import "./Login.css";
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 type Usuario = {
   email: string;
@@ -12,7 +12,7 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const usuarioFake: Usuario = {
     email: "castro@email.com",
@@ -29,9 +29,9 @@ export default function Login() {
       setErro("Email ou senha inválidos.");
     }
 
-     if (email === "castro@email.com" && senha === "123456") {
-    navigate("/home");
-  }
+    if (email === "castro@email.com" && senha === "123456") {
+      navigate("/home");
+    }
   }
 
   return (
