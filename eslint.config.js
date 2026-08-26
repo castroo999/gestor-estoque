@@ -17,11 +17,9 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
-
     languageOptions: {
       globals: globals.browser,
     },
-
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -35,12 +33,13 @@ export default defineConfig([
   // BACKEND
   {
     files: ["backend/src/**/*.ts"],
-    extends: [js.configs.recommended, tseslint.configs.recommended],
-
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+    ],
     languageOptions: {
       globals: globals.node,
     },
-
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -48,6 +47,8 @@ export default defineConfig([
           argsIgnorePattern: "^_",
         },
       ],
+
+      "@typescript-eslint/no-empty-object-type": "off",
     },
   },
 ]);

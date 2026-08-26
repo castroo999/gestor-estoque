@@ -30,6 +30,7 @@ app.get("/", (_req: Request, res: Response) => {
 // Registra todas as rotas de produtos
 app.use("/produtos", produtosRouter);
 
+// Registra todas as rotas de usuarios
 app.use("/usuarios", userRouter);
 
 // Executado quando nenhuma rota é encontrada
