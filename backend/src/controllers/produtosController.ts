@@ -26,8 +26,21 @@ function formatarProduto(produto: {
   };
 }
 
-export async function listarProdutos(_req: Request, res: Response) {
+export async function listarProdutos(req: Request, res: Response) {
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
   const produtos = await prisma.produto.findMany({
+    where: {
+      userId,
+    },
+
     select: produtoSelect,
     orderBy: {
       criadoEm: "desc",
@@ -42,6 +55,15 @@ export async function cadastrarProduto(
   res: Response,
 ) {
   const { nome, preco, qnt } = req.body;
+
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
 
   if (
     typeof nome !== "string" ||
@@ -63,6 +85,7 @@ export async function cadastrarProduto(
       nome: nome.trim(),
       preco,
       qnt,
+      userId,
     },
     select: produtoSelect,
   });
@@ -79,9 +102,19 @@ export async function buscarProduto(
 ) {
   const { id } = req.params;
 
-  const produtoProcurado = await prisma.produto.findUnique({
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
+  const produtoProcurado = await prisma.produto.findFirst({
     where: {
       id,
+      userId,
     },
     select: produtoSelect,
   });
@@ -105,6 +138,14 @@ export async function editarProduto(
 ) {
   const { id } = req.params;
   const { nome, preco, qnt } = req.body;
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
 
   if (
     typeof nome !== "string" ||
@@ -121,9 +162,10 @@ export async function editarProduto(
     return;
   }
 
-  const produtoEncontrado = await prisma.produto.findUnique({
+  const produtoEncontrado = await prisma.produto.findFirst({
     where: {
       id,
+      userId,
     },
     select: {
       id: true,
@@ -161,15 +203,25 @@ export async function deletarProduto(
 ) {
   const { id } = req.params;
 
-  const produtoEncontrado = await prisma.produto.findUnique({
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
+  const produtoEncontrado = await prisma.produto.findFirst({
     where: {
       id,
+      userId,
     },
     select: {
       id: true,
     },
   });
-  
+
   if (!produtoEncontrado) {
     res.status(404).json({
       mensagem: "Produto não encontrado",

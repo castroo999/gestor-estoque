@@ -1,14 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
-
-// const usuarios: User[] = [
-//     {
-//         id: randomUUID(),
-//         nome: 'gustavo',
-//         email: 'gustavo@email.com',
-//         senha: 'senhaSecreta'
-//     }
-// ]
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 type LoginBody = {
   email: string;
@@ -21,7 +14,10 @@ type CadastroBody = {
   senha: string;
 };
 
-export async function loginUser(req: Request<{}, {}, LoginBody>, res: Response) {
+export async function loginUser(
+  req: Request<{}, {}, LoginBody>,
+  res: Response,
+) {
   const { email, senha } = req.body;
 
   if (!email || !senha) {
@@ -46,15 +42,34 @@ export async function loginUser(req: Request<{}, {}, LoginBody>, res: Response) 
     return;
   }
 
-  if (usuarioEncontrado.senha !== senha) {
+  const senhaCorreta = await bcrypt.compare(senha, usuarioEncontrado.senha);
+
+  if (!senhaCorreta) {
     res.status(401).json({
-      mensagem: "E-mail ou senha incorretos",
+      mensagem: "Senha incorreta",
     });
     return;
   }
 
+  const jwtSecret = process.env.JWT_SECRET;
+
+  if (!jwtSecret) {
+    throw new Error("JWT_SECRET não foi definida");
+  }
+
+  const token = jwt.sign(
+    {
+      userId: usuarioEncontrado.id,
+    },
+    jwtSecret,
+    {
+      expiresIn: "1d",
+    },
+  );
+
   res.status(200).json({
     mensagem: "Login realizado com sucesso",
+    token,
     usuario: {
       id: usuarioEncontrado.id,
       nome: usuarioEncontrado.nome,
@@ -63,7 +78,10 @@ export async function loginUser(req: Request<{}, {}, LoginBody>, res: Response) 
   });
 }
 
-export  async function cadastroUser(req: Request<{}, {}, CadastroBody>, res: Response,) {
+export async function cadastroUser(
+  req: Request<{}, {}, CadastroBody>,
+  res: Response,
+) {
   const { nome, email, senha } = req.body;
 
   if (!nome || !email || !senha) {
@@ -102,21 +120,22 @@ export  async function cadastroUser(req: Request<{}, {}, CadastroBody>, res: Res
     return;
   }
 
+  const senhaHash = await bcrypt.hash(senha, 10);
+
   const usuarioCadastrado = await prisma.user.create({
-  data: {
-    nome: nome.trim(),
-    email: emailPadrao,
-    senha,
-  },
-});
+    data: {
+      nome: nome.trim(),
+      email: emailPadrao,
+      senha: senhaHash,
+    },
+  });
 
-res.status(201).json({
-  mensagem: "Usuário cadastrado com sucesso!",
-  usuario: {
-    id: usuarioCadastrado.id,
-    nome: usuarioCadastrado.nome,
-    email: usuarioCadastrado.email,
-  },
-});
-
+  res.status(201).json({
+    mensagem: "Usuário cadastrado com sucesso!",
+    usuario: {
+      id: usuarioCadastrado.id,
+      nome: usuarioCadastrado.nome,
+      email: usuarioCadastrado.email,
+    },
+  });
 }

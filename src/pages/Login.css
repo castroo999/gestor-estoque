@@ -93,6 +93,11 @@ form button:active {
 	transform: translateY(0);
 }
 
+p a{
+	text-decoration: none;
+	color: #28645d;
+}
+
 @keyframes form-enter {
 	from {
 		opacity: 0;

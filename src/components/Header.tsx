@@ -1,7 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css'
 
 export default function Header(){
+
+    const navigate = useNavigate()
+
+    function Sair() {
+        localStorage.removeItem("usuario")
+        localStorage.removeItem("token")
+        
+        alert("Voce saiu da sua conta com sucesso")
+        navigate("/")
+    }
     return(
         <section className='header'>
             <div className="header-text">
@@ -12,6 +22,7 @@ export default function Header(){
                 <Link to ='/Add-produtos'>Registrar produto</Link>
                 <Link to ='/Ver-produtos'>Ver produtos</Link>
                 <Link to ='/Dashboard'>Dashboard</Link>
+                <button className='sair' onClick={Sair}>Sair</button>
             </nav>
         </section>
     )

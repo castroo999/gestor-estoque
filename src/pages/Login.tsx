@@ -1,11 +1,6 @@
 import "./Login.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-type Usuario = {
-  email: string;
-  senha: string;
-};
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,23 +9,35 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const usuarioFake: Usuario = {
-    email: "castro@email.com",
-    senha: "123456",
-  };
-
-  function fazerLogin(e: React.FormEvent<HTMLFormElement>) {
+  async function fazerLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setErro("")
 
-    if (email === usuarioFake.email && senha === usuarioFake.senha) {
-      setErro("");
-      alert("Login realizado com sucesso!");
-    } else {
-      setErro("Email ou senha inválidos.");
-    }
+    try {
+      const resposta = await fetch("http://localhost:3000/usuarios/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          senha,
+        }),
+      });
 
-    if (email === "castro@email.com" && senha === "123456") {
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        setErro(dados.mensagem ?? "Não foi possível fazer login");
+        return;
+      }
+
+      localStorage.setItem("token", dados.token);
+      localStorage.setItem("usuario", JSON.stringify(dados.usuario));
+
       navigate("/home");
+    } catch {
+      setErro("não foi possivel efetuar login");
     }
   }
 
@@ -56,6 +63,9 @@ export default function Login() {
         {erro && <p>{erro}</p>}
 
         <button type="submit">Entrar</button>
+        <p>
+          Não tem uma conta? <Link to={"/cadastrar"}>CADASTRAR</Link>
+        </p>
       </form>
     </main>
   );

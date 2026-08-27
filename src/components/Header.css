@@ -65,3 +65,30 @@ nav a:first-child:focus-visible {
     background: #ffd083;
     border-color: #ffd083;
 }
+
+.sair {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #dc2626;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.sair:hover {
+    background-color: #b91c1c;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+.sair:active {
+    transform: translateY(2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
