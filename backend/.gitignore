@@ -1,2 +1,4 @@
 .env
 dist
+/src/generated/prisma
+DATABASE_URL="postgresql://postgres:Felipinho04@localhost:5432/gestor_estoque?schema=public"

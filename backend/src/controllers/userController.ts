@@ -1,15 +1,14 @@
 import type { Request, Response } from "express";
-import { randomUUID } from "crypto";
-import type { User } from "../models/modeloUser.js";
+import { prisma } from "../lib/prisma.js";
 
-const usuarios: User[] = [
-    {
-        id: randomUUID(),
-        nome: 'gustavo',
-        email: 'gustavo@email.com',
-        senha: 'senhaSecreta'
-    }
-]
+// const usuarios: User[] = [
+//     {
+//         id: randomUUID(),
+//         nome: 'gustavo',
+//         email: 'gustavo@email.com',
+//         senha: 'senhaSecreta'
+//     }
+// ]
 
 type LoginBody = {
   email: string;
@@ -17,13 +16,12 @@ type LoginBody = {
 };
 
 type CadastroBody = {
-  nome:string
-  email: string,
-  senha: string,
-}
+  nome: string;
+  email: string;
+  senha: string;
+};
 
-
-export function loginUser(req: Request<{}, {}, LoginBody>, res: Response) {
+export async function loginUser(req: Request<{}, {}, LoginBody>, res: Response) {
   const { email, senha } = req.body;
 
   if (!email || !senha) {
@@ -35,9 +33,11 @@ export function loginUser(req: Request<{}, {}, LoginBody>, res: Response) {
 
   const emailPadrao = email.trim().toLowerCase();
 
-  const usuarioEncontrado = usuarios.find(
-    (usuario) => usuario.email === emailPadrao,
-  );
+  const usuarioEncontrado = await prisma.user.findUnique({
+    where: {
+      email: emailPadrao,
+    },
+  });
 
   if (!usuarioEncontrado) {
     res.status(401).json({
@@ -63,58 +63,60 @@ export function loginUser(req: Request<{}, {}, LoginBody>, res: Response) {
   });
 }
 
-export function cadastroUser(req: Request<{},{}, CadastroBody>, res: Response){
-  const { nome, email, senha } = req.body
+export  async function cadastroUser(req: Request<{}, {}, CadastroBody>, res: Response,) {
+  const { nome, email, senha } = req.body;
 
-  if(!nome || !email || !senha){
+  if (!nome || !email || !senha) {
     res.status(400).json({
-      mensagem: ("Erro ao cadastrar preencha todos os campos!")
-    })
-    return
+      mensagem: "Erro ao cadastrar preencha todos os campos!",
+    });
+    return;
   }
 
-  if(!email.includes('@')) {
+  if (!email.includes("@")) {
     res.status(400).json({
       mensagem: "informe um email valido",
-    })
-    return
+    });
+    return;
   }
 
-  if (senha.length < 6){
+  if (senha.length < 6) {
     res.status(400).json({
       mensagem: "a senha deve conter no minimo 6 caracteres",
-    })
-    return
+    });
+    return;
   }
 
   const emailPadrao = email.trim().toLowerCase();
 
-  const emailJaExiste = usuarios.some(
-    (usuario) => usuario.email === emailPadrao
-  );
+  const emailJaExiste = await prisma.user.findUnique({
+    where: {
+      email: emailPadrao,
+    },
+  });
 
-  if(emailJaExiste){
+  if (emailJaExiste) {
     res.status(409).json({
-      error: ("Erro ao cadastrar o email digitado já existe!")
-    })
-    return
+      error: "Erro ao cadastrar o email digitado já existe!",
+    });
+    return;
   }
 
-  const usuarioCadastrado: User = {
-    id: randomUUID(),
+  const usuarioCadastrado = await prisma.user.create({
+  data: {
     nome: nome.trim(),
     email: emailPadrao,
     senha,
-  }
+  },
+});
 
-  usuarios.push(usuarioCadastrado);
+res.status(201).json({
+  mensagem: "Usuário cadastrado com sucesso!",
+  usuario: {
+    id: usuarioCadastrado.id,
+    nome: usuarioCadastrado.nome,
+    email: usuarioCadastrado.email,
+  },
+});
 
-  res.status(201).json({
-    menagem: "Usuario cadastrado com sucesso!",
-    usuario: {
-      id:usuarioCadastrado.id,
-      nome: usuarioCadastrado.nome,
-      email: usuarioCadastrado.email,
-    }
-  })
 }

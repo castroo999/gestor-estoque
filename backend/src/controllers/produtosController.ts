@@ -1,129 +1,191 @@
 import type { Request, Response } from "express";
-import { randomUUID } from "node:crypto";
-import { Produto } from "../models/modeloProduto.js";
+import { prisma } from "../lib/prisma.js";
 
-const produtos: Produto[] = [
-  {
-    id: randomUUID(),
-    nome: "Teclado",
-    preco: 300,
-    qnt: 5,
-  },
-  {
-    id: randomUUID(),
-    nome: "Mouse",
-    preco: 150,
-    qnt: 8,
-  },
-  {
-    id: randomUUID(),
-    nome: "monitor",
-    preco: 700,
-    qnt: 4,
-  },
-  {
-    id: randomUUID(),
-    nome: "fone de ouvido",
-    preco: 150,
-    qnt: 10,
-  },
-];
+type ProdutoBody = {
+  nome: string;
+  preco: number;
+  qnt: number;
+};
 
-export function listarProdutos(req: Request, res: Response) {
-  res.status(200).json(produtos);
-}
+const produtoSelect = {
+  id: true,
+  nome: true,
+  preco: true,
+  qnt: true,
+} as const;
 
-export function cadastrarProduto(req: Request, res: Response) {
-  const { nome, preco, qnt } = req.body;
-  const id = randomUUID();
-
-  if (!nome || !preco || qnt === undefined || qnt === null || qnt < 0) {
-    res.status(400).send("Erro ao cadastrar um produto");
-    return;
-  }
-
-  const novoProduto: Produto = {
-    id,
-    nome: req.body.nome,
-    preco: req.body.preco,
-    qnt: req.body.qnt,
+function formatarProduto(produto: {
+  id: string;
+  nome: string;
+  preco: unknown;
+  qnt: number;
+}) {
+  return {
+    ...produto,
+    preco: Number(produto.preco),
   };
-
-  produtos.push(novoProduto);
-
-  res.status(201).json({
-    mensage: "Produto cadastrado com sucesso",
-    produto: novoProduto,
-  });
 }
 
-export function editarProduto(req: Request<{ id: string }>, res: Response) {
+export async function listarProdutos(_req: Request, res: Response) {
+  const produtos = await prisma.produto.findMany({
+    select: produtoSelect,
+    orderBy: {
+      criadoEm: "desc",
+    },
+  });
+
+  res.status(200).json(produtos.map(formatarProduto));
+}
+
+export async function cadastrarProduto(
+  req: Request<{}, {}, ProdutoBody>,
+  res: Response,
+) {
   const { nome, preco, qnt } = req.body;
-  const { id } = req.params;
 
-  const indiceProduto = produtos.findIndex((produto) => produto.id === id);
-
-  if (indiceProduto === -1) {
-    res.status(404).send("Erro ao achar id do produto");
-    return;
-  }
-
-  const produtoEncontrado = produtos[indiceProduto];
-
-  if (!produtoEncontrado) {
-    res.status(404).json({
-      erro: "erro ao encontrar produto",
+  if (
+    typeof nome !== "string" ||
+    nome.trim() === "" ||
+    typeof preco !== "number" ||
+    preco <= 0 ||
+    typeof qnt !== "number" ||
+    !Number.isInteger(qnt) ||
+    qnt < 0
+  ) {
+    res.status(400).json({
+      mensagem: "Informe nome, preço e quantidade válidos",
     });
     return;
   }
 
-  const produtoEditado: Produto = {
-    id: produtoEncontrado.id,
-    nome: nome,
-    preco: preco,
-    qnt: qnt,
-  };
+  const novoProduto = await prisma.produto.create({
+    data: {
+      nome: nome.trim(),
+      preco,
+      qnt,
+    },
+    select: produtoSelect,
+  });
 
-  produtos[indiceProduto] = produtoEditado;
-
-  res.status(200).json({
-    mensagem: "produto editado com sucesso",
-    produtoEditado,
+  res.status(201).json({
+    mensagem: "Produto cadastrado com sucesso",
+    produto: formatarProduto(novoProduto),
   });
 }
 
-export function deletarProduto(req: Request<{ id: string }>, res: Response) {
+export async function buscarProduto(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
   const { id } = req.params;
 
-  const indiceProduto = produtos.findIndex((produtos) => produtos.id === id);
-
-  if (indiceProduto === -1) {
-    res.status(404).send("erro ao procurar o id do produto");
-    return;
-  }
-
-  const produtoRemovido = produtos.splice(indiceProduto, 1);
-
-  res.status(200).json({
-    mensagem: "Produto deletado com sucesso",
-    produto: produtoRemovido[0],
+  const produtoProcurado = await prisma.produto.findUnique({
+    where: {
+      id,
+    },
+    select: produtoSelect,
   });
-}
-
-export function buscarProduto(req: Request<{ id: string }>, res: Response) {
-  const { id } = req.params;
-
-  const produtoProcurado = produtos.find((produto) => produto.id === id);
 
   if (!produtoProcurado) {
     res.status(404).json({
-      mensagem: "Erro ao procurar o produto",
+      mensagem: "Produto não encontrado",
     });
     return;
   }
 
   res.status(200).json({
     mensagem: "Busca feita com sucesso",
-    produto: produtoProcurado,
+    produto: formatarProduto(produtoProcurado),
+  });
+}
+
+export async function editarProduto(
+  req: Request<{ id: string }, {}, ProdutoBody>,
+  res: Response,
+) {
+  const { id } = req.params;
+  const { nome, preco, qnt } = req.body;
+
+  if (
+    typeof nome !== "string" ||
+    nome.trim() === "" ||
+    typeof preco !== "number" ||
+    preco <= 0 ||
+    typeof qnt !== "number" ||
+    !Number.isInteger(qnt) ||
+    qnt < 0
+  ) {
+    res.status(400).json({
+      mensagem: "Informe nome, preço e quantidade válidos",
+    });
+    return;
+  }
+
+  const produtoEncontrado = await prisma.produto.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!produtoEncontrado) {
+    res.status(404).json({
+      mensagem: "Produto não encontrado",
+    });
+    return;
+  }
+
+  const produtoEditado = await prisma.produto.update({
+    where: {
+      id,
+    },
+    data: {
+      nome: nome.trim(),
+      preco,
+      qnt,
+    },
+    select: produtoSelect,
+  });
+
+  res.status(200).json({
+    mensagem: "Produto editado com sucesso",
+    produto: formatarProduto(produtoEditado),
+  });
+}
+
+export async function deletarProduto(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
+  const { id } = req.params;
+
+  const produtoEncontrado = await prisma.produto.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  
+  if (!produtoEncontrado) {
+    res.status(404).json({
+      mensagem: "Produto não encontrado",
+    });
+    return;
+  }
+
+  const produtoRemovido = await prisma.produto.delete({
+    where: {
+      id,
+    },
+    select: produtoSelect,
+  });
+
+  res.status(200).json({
+    mensagem: "Produto deletado com sucesso",
+    produto: formatarProduto(produtoRemovido),
   });
 }
