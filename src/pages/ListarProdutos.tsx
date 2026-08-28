@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./ListarProdutos.css";
 
-export default function Add() {
+type ListarProdutosProps = {
+  busca: string;
+};
+
+export default function Listar({ busca }: ListarProdutosProps) {
   type Produto = {
     id: string;
     nome: string;
@@ -48,16 +52,20 @@ export default function Add() {
     carregarProdutos();
   }, []);
 
+  const produtosFiltrados = produtos.filter((produto) =>
+    produto.nome.toLowerCase().includes(busca.toLowerCase().trim()),
+  );
+
   return (
     <section className="produtos">
       <div className="produtos-text">
         <h2>Acompanhe seus produtos registrados aqui!</h2>
       </div>
-      {produtos.map((produtos) => (
-        <div key={produtos.id} className="item-produto">
-          <h2>{produtos.nome}</h2>
-          <p>R$ {produtos.preco}</p>
-          <span>{produtos.qnt}</span>
+      {produtosFiltrados.map((produto) => (
+        <div key={produto.id} className="item-produto">
+          <h2>{produto.nome}</h2>
+          <p>R$ {produto.preco}</p>
+          <span>{produto.qnt}</span>
         </div>
       ))}
     </section>

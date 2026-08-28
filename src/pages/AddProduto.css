@@ -1,0 +1,23 @@
+.voltar {
+	position: absolute;
+	top: 24px;
+	left: 24px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 14px;
+	color: #f7fbf9;
+	background-color: #28645d;
+	border: 1px solid #a9d1c8;
+	border-radius: 8px;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.voltar:hover,
+.voltar:focus-visible {
+	background-color: #34776e;
+	transform: scale(1.07);
+}

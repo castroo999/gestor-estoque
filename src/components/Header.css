@@ -92,3 +92,28 @@ nav a:first-child:focus-visible {
     transform: translateY(2);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.buscar {
+    width: 180px;
+    height: 25px;
+    padding: 0 14px;
+    color: #123c3a;
+    background-color: #f7fbf9;
+    border: 1px solid #a9d1c8;
+    border-radius: 8px;
+    font: inherit;
+    outline: none;
+}
+
+nav > svg {
+    color: #f4b860;
+}
+
+.buscar::placeholder {
+    color: #718783;
+}
+
+.buscar:focus {
+    border-color: #f4b860;
+    box-shadow: 0 0 0 3px rgba(244, 184, 96, 0.2);
+}
