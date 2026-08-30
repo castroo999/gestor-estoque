@@ -6,6 +6,7 @@ import Cadastrar from "./pages/Cadastro";
 import Home from "./pages/Home";
 import AddProduto from './pages/AddProduto'
 import EditarProduto from './pages/EditarProduto'
+import Dashboard from './components/Dashboard'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/add-produtos" element={<AddProduto />} />
         <Route path="/editar-produto/:id" element={<EditarProduto />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
