@@ -35,6 +35,7 @@ export default function Login() {
       localStorage.setItem("token", dados.token);
       localStorage.setItem("usuario", JSON.stringify(dados.usuario));
 
+      alert("Login efetuado com sucesso")
       navigate("/home");
     } catch {
       setErro("não foi possivel efetuar login");

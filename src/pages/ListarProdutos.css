@@ -6,7 +6,7 @@
     align-items: center;
     margin-top: 40px;
     padding: 32px 24px 40px;
-    gap: 24px;
+    gap: 30px;
     background: transparent;
     color: #f7fbf9;
     width: 100%;
@@ -35,14 +35,9 @@
     background-color: #f7fbf9;
     border: 5px solid #325c4e;
     border-radius: 12px;
+    gap: 20px;
     box-sizing: border-box;
     box-shadow: 0 8px 20px rgba(5, 25, 24, 0.22);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.item-produto:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(5, 25, 24, 0.3);
 }
 
 .item-produto h2 {
@@ -67,4 +62,21 @@
     background-color: #f4b860;
     border-radius: 999px;
     font-weight: 700;
+}
+
+button{
+    border: none;
+    min-width: 38px;
+    padding: 6px 10px;
+    color: #f4b860;
+    background-color: #123c3a;
+    cursor: pointer;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+button:hover{
+    transform: scale(1.05);
 }
