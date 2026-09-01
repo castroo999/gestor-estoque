@@ -31,6 +31,8 @@ export default function Header({ onSearch }: HeaderProps) {
           onChange={(e) => onSearch(e.target.value)}
         />
         <Link to="/add-produtos">Registrar produto</Link>
+        <Link to="/add-funcionario">Registrar funcionario</Link>
+        <Link to="/funcionarios">Ver funcionarios</Link>
         <Link to="/Dashboard">Dashboard</Link>
         <button className="sair" onClick={Sair}>
           Sair

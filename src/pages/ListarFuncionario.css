@@ -1,0 +1,202 @@
+.pagina-funcionarios {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  color: #f7fbf9;
+  background: transparent;
+}
+
+.cabecalho-funcionarios {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.cabecalho-funcionarios h1 {
+  margin: 0 0 8px;
+  color: #f7fbf9;
+  font-size: 2rem;
+}
+
+.cabecalho-funcionarios p {
+  margin: 0;
+  color: #d8e7e2;
+}
+
+.cabecalho-funcionarios button {
+  border: none;
+  padding: 10px 18px;
+  color: #123c3a;
+  background-color: #f4b860;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s ease;
+}
+
+.cabecalho-funcionarios button:hover {
+  transform: scale(1.05);
+  background-color: #ffc76f;
+}
+
+
+.pagina-funcionarios > input[type="search"] {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto 35px;
+  padding: 12px 18px;
+  color: #18312f;
+  background-color: #f7fbf9;
+  border: 3px solid #325c4e;
+  border-radius: 999px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.pagina-funcionarios > input[type="search"]:focus {
+  border-color: #f4b860;
+  box-shadow: 0 0 0 4px rgba(244, 184, 96, 0.18);
+}
+
+
+
+.lista-funcionarios {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+
+  gap: 30px;
+}
+
+
+.card-funcionario {
+  width: 250px;
+  min-height: 250px;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  color: #18312f;
+  background-color: #f7fbf9;
+  border: 5px solid #325c4e;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(5, 25, 24, 0.22);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card-funcionario:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 14px 28px rgba(5, 25, 24, 0.3);
+}
+
+.card-funcionario > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-funcionario h2 {
+  margin: 0;
+
+  color: #123c3a;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+
+.card-funcionario p {
+  margin: 0;
+  color: #28643c;
+  font-size: 0.95rem;
+}
+
+.card-funcionario p strong {
+  color: #123c3a;
+}
+
+
+.funcionario-ativo,
+.funcionario-inativo {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.funcionario-ativo {
+  color: #123c3a;
+  background-color: #a7e8bd;
+}
+
+.funcionario-inativo {
+  color: #7f1d1d;
+  background-color: #fecaca;
+}
+
+.card-funcionario button {
+  width: 100%;
+  border: none;
+  padding: 8px 12px;
+  color: #f4b860;
+  background-color: #123c3a;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s ease;
+}
+
+.card-funcionario button:hover {
+  transform: scale(1.03);
+  background-color: #1c514d;
+}
+
+.funcionarios-vazio {
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 35px 20px;
+  color: #18312f;
+  background-color: #f7fbf9;
+  border: 5px solid #325c4e;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(5, 25, 24, 0.22);
+}
+
+.funcionarios-vazio h2 {
+  margin: 0 0 10px;
+  color: #123c3a;
+}
+
+.funcionarios-vazio p {
+  margin: 0;
+  color: #28643c;
+}
+
+.mensagem-erro {
+  width: fit-content;
+  margin: 20px auto;
+  padding: 10px 16px;
+  color: #991b1b;
+  background-color: #fee2e2;
+  border-radius: 8px;
+  font-weight: 700;
+}

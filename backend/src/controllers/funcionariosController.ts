@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 
 type FuncionarioBody = {
   nome: string;
-  cpf: string;
+  cpf?: string;
   matricula: string;
   cargo: string;
   setor: string;
@@ -18,14 +18,19 @@ export async function cadastrarFuncionario(
 
   if (!userId) {
     res.status(401).json({
-      error: "Usuário não autenticado",
+      mensagem: "Usuário não autenticado",
     });
     return;
   }
 
-  if (!nome?.trim() || !matricula?.trim() || !cargo?.trim() || !setor?.trim()) {
+  if (
+    !nome?.trim() ||
+    !matricula?.trim() ||
+    !cargo?.trim() ||
+    !setor?.trim()
+  ) {
     res.status(400).json({
-      error: "Preencha todos os campos obrigatórios",
+      mensagem: "Preencha todos os campos obrigatórios",
     });
     return;
   }
@@ -39,7 +44,7 @@ export async function cadastrarFuncionario(
 
   if (matriculaJaExiste) {
     res.status(409).json({
-      error: "A matrícula já está em uso",
+      mensagem: "A matrícula já está em uso",
     });
     return;
   }
@@ -58,5 +63,104 @@ export async function cadastrarFuncionario(
   res.status(201).json({
     mensagem: "Funcionário cadastrado com sucesso",
     funcionario,
+  });
+}
+
+export async function listarFuncionarios(
+  req: Request,
+  res: Response,
+) {
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
+  const funcionarios = await prisma.funcionario.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      criadoEm: "desc",
+    },
+  });
+
+  res.status(200).json(funcionarios);
+}
+
+export async function buscarFuncionario(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
+  const funcionarioEncontrado =
+    await prisma.funcionario.findFirst({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+  if (!funcionarioEncontrado) {
+    res.status(404).json({
+      mensagem: "Funcionário não encontrado",
+    });
+    return;
+  }
+
+  res.status(200).json(funcionarioEncontrado);
+}
+
+export async function deletarFuncionario(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      mensagem: "Usuário não autenticado",
+    });
+    return;
+  }
+
+  const funcionarioParaDeletar =
+    await prisma.funcionario.findFirst({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+  if (!funcionarioParaDeletar) {
+    res.status(404).json({
+      mensagem: "Funcionário não encontrado",
+    });
+    return;
+  }
+
+  const funcionarioDeletado =
+    await prisma.funcionario.delete({
+      where: {
+        id,
+      },
+    });
+
+  res.status(200).json({
+    mensagem: "Funcionário deletado com sucesso",
+    funcionario: funcionarioDeletado,
   });
 }
