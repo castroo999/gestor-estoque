@@ -12,23 +12,96 @@ datasource db {
   provider = "postgresql"
 }
 
+enum TipoProduto {
+  COMUM
+  EPI
+  FERRAMENTA
+  EQUIPAMENTO
+  UNIFORME
+}
+
 model User {
-  id           String    @id @default(uuid())
-  nome         String
-  email        String    @unique
-  senha        String
-  produtos     Produto[]
-  criadoEm     DateTime  @default(now())
-  atualizadoEm DateTime  @updatedAt
+  id    String @id @default(uuid())
+  nome  String
+  email String @unique
+  senha String
+
+  produtos           Produto[]
+  funcionarios       Funcionario[]
+  entregasRealizadas EntregaProduto[] @relation("ResponsavelEntrega")
+
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
 }
 
 model Produto {
-  id           String   @id @default(uuid())
-  nome         String
-  preco        Decimal  @db.Decimal(10, 2)
-  qnt          Int
-  userId       String?
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id    String  @id @default(uuid())
+  nome  String
+  preco Decimal @db.Decimal(10, 2)
+  qnt   Int
+
+  tipo          TipoProduto @default(COMUM)
+  estoqueMinimo Int         @default(0)
+
+  ca         String?
+  validadeCA DateTime?
+  lote       String?
+  tamanho    String?
+  fabricante String?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  entregas EntregaProduto[]
+
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @updatedAt
+
+  @@index([userId])
+  @@index([tipo])
+}
+
+model Funcionario {
+  id        String  @id @default(uuid())
+  nome      String
+  cpf       String?
+  matricula String
+  cargo     String
+  setor     String
+  ativo     Boolean @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  entregas EntregaProduto[]
+
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  @@unique([userId, matricula])
+  @@unique([userId, cpf])
+  @@index([userId])
+  @@index([setor])
+}
+
+model EntregaProduto {
+  id          String    @id @default(uuid())
+  quantidade  Int
+  entregueEm  DateTime  @default(now())
+  devolvidoEm DateTime?
+  observacao  String?
+
+  funcionarioId String
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id], onDelete: Restrict)
+
+  produtoId String
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Restrict)
+
+  responsavelId String
+  responsavel   User   @relation("ResponsavelEntrega", fields: [responsavelId], references: [id], onDelete: Restrict)
+
+  @@index([funcionarioId])
+  @@index([produtoId])
+  @@index([responsavelId])
+  @@index([entregueEm])
 }

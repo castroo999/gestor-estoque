@@ -2,6 +2,7 @@ import express from "express";
 import type { Request, Response, NextFunction } from "express";
 import produtosRouter from "./routers/produtosRouter.js";
 import userRouter from './routers/userRouters.js';
+import funcionariosRouter from "./routers/funcionariosRouter.js";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -32,6 +33,9 @@ app.use("/produtos", produtosRouter);
 
 // Registra todas as rotas de usuarios
 app.use("/usuarios", userRouter);
+
+// registra todas as rotas de funcionarios
+app.use("/funcionarios", funcionariosRouter);
 
 // Executado quando nenhuma rota é encontrada
 app.use((_req: Request, res: Response) => {
