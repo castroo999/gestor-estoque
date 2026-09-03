@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
+import { deletarFuncionario } from "../scripts/deletarFuncionarios";
 import "./ListarFuncionario.css";
 
 type Funcionario = {
@@ -26,6 +27,24 @@ export default function ListarFuncionarios() {
 
   function voltar() {
     navigate("/home");
+  }
+
+  async function handleDeletarFuncionario(id: string) {
+    const confirmou = window.confirm(
+      "Tem certeza que deseja deletar este produto?",
+    );
+
+    if (!confirmou) {
+      return;
+    }
+    
+    try {
+      await deletarFuncionario(id);
+
+      setFuncionarios((prev) => prev.filter((f) => f.id !== id));
+    } catch {
+      setErro("Erro ao deletar o funcionário");
+    }
   }
 
   useEffect(() => {
@@ -164,12 +183,19 @@ export default function ListarFuncionarios() {
               </p>
             )}
 
-            {/* <button
+            <button
               type="button"
-              onClick={() => navigate(`/funcionarios/${funcionario.id}`)}
+              onClick={() => navigate(`/editar-funcionario/${funcionario.id}`)}
             >
-              Ver detalhes
-            </button> */}
+              Editar dados
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleDeletarFuncionario(funcionario.id)}
+            >
+              Deletar
+            </button>
           </article>
         ))}
       </section>

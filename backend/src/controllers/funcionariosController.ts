@@ -97,21 +97,23 @@ export async function buscarFuncionario(
     return;
   }
 
-  const funcionarioEncontrado = await prisma.funcionario.findFirst({
+  const funcionario = await prisma.funcionario.findFirst({
     where: {
       id,
       userId,
     },
   });
 
-  if (!funcionarioEncontrado) {
+  if (!funcionario) {
     res.status(404).json({
       mensagem: "Funcionário não encontrado",
     });
     return;
   }
 
-  res.status(200).json(funcionarioEncontrado);
+  res.status(200).json({
+    funcionario,
+  });
 }
 
 export async function editarFuncionario(

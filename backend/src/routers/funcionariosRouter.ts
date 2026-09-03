@@ -14,9 +14,9 @@ router.post("/add-funcionario", cadastrarFuncionario);
 
 router.get("/", listarFuncionarios)
 
-router.get("/buscar-funcionario/:id", buscarFuncionario)
+router.get("/:id", buscarFuncionario)
 
-router.get("/editar-funcionario/:id", editarFuncionario)
+router.put("/editar-funcionario/:id", editarFuncionario)
 
 router.delete("/deletar-funcionario", deletarFuncionario)
 

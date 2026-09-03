@@ -8,6 +8,7 @@ import AddProduto from "./pages/AddProduto";
 import EditarProduto from "./pages/EditarProduto";
 import Dashboard from "./components/Dashboard";
 import AddFuncionario from "./pages/AddFuncionario";
+import EditarFuncionario from "./pages/EditarFuncionario";
 import ListarFuncionarios from './pages/ListarFuncionario';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/editar-produto/:id" element={<EditarProduto />} />
         <Route path="/add-funcionario" element={<AddFuncionario />} />
         <Route path="/funcionarios" element={<ListarFuncionarios />} />
+        <Route path="/editar-funcionario/:id" element={<EditarFuncionario />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
