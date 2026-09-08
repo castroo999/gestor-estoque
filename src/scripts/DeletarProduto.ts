@@ -1,3 +1,6 @@
+const API_URL =
+  import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+
 export async function deletarProduto(id: string) {
   const token = localStorage.getItem("token");
 
@@ -6,7 +9,7 @@ export async function deletarProduto(id: string) {
   }
 
   const resposta = await fetch(
-    `http://localhost:3000/produtos/deletar-produto/${id}`,
+    `${API_URL}/produtos/deletar-produto/${id}`,
     {
       method: "DELETE",
       headers: {
@@ -17,8 +20,14 @@ export async function deletarProduto(id: string) {
 
   const dados = await resposta.json();
 
+  if (resposta.status === 401) {
+    throw new Error("TOKEN_INVALIDO");
+  }
+
   if (!resposta.ok) {
-    throw new Error(dados.mensagem ?? "Erro ao deletar o produto");
+    throw new Error(
+      dados.mensagem ?? "Não foi possível deletar o produto",
+    );
   }
 
   return dados;

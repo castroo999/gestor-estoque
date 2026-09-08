@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "./pages/Login";
 import Cadastrar from "./pages/Cadastro";
 import Home from "./pages/Home";
@@ -9,7 +8,9 @@ import EditarProduto from "./pages/EditarProduto";
 import Dashboard from "./components/Dashboard";
 import AddFuncionario from "./pages/AddFuncionario";
 import EditarFuncionario from "./pages/EditarFuncionario";
-import ListarFuncionarios from './pages/ListarFuncionario';
+import ListarFuncionarios from "./pages/ListarFuncionario";
+import AddInventario from "./pages/AddInventario";
+import VerInventario from './pages/verInventario';
 
 export default function App() {
   return (
@@ -21,8 +22,10 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/add-produtos" element={<AddProduto />} />
         <Route path="/editar-produto/:id" element={<EditarProduto />} />
+        <Route path="/add-inventario" element={<AddInventario />} />
         <Route path="/add-funcionario" element={<AddFuncionario />} />
         <Route path="/funcionarios" element={<ListarFuncionarios />} />
+        <Route path="/funcionarios/:funcionarioId/inventario" element={<VerInventario />} />
         <Route path="/editar-funcionario/:id" element={<EditarFuncionario />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>

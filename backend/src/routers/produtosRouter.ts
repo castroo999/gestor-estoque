@@ -1,21 +1,35 @@
-import { Router } from 'express'
-import { listarProdutos } from '../controllers/produtosController.js'
-import { cadastrarProduto } from '../controllers/produtosController.js'
-import { editarProduto } from '../controllers/produtosController.js'
-import { deletarProduto } from '../controllers/produtosController.js'
-import { buscarProduto } from '../controllers/produtosController.js'
+import { Router } from "express";
+
+import {
+  listarProdutos,
+  cadastrarProduto,
+  editarProduto,
+  deletarProduto,
+  buscarProduto,
+} from "../controllers/produtosController.js";
+
+import {
+  listarEpis,
+  cadastrarEpi,
+  deletarEpi,
+} from "../controllers/episControllers.js";
+
 import { verificarToken } from "../middlewares/verificarToken.js";
 
-const router = Router()
+const router = Router();
 
 router.use(verificarToken);
-router.get("/", listarProdutos)
 
-router.post("/add-produto", cadastrarProduto)
+// Rotas de EPI
+router.get("/epis", listarEpis);
+router.post("/epis", cadastrarEpi);
+router.delete("/epis/:id", deletarEpi);
 
-router.put("/editar-produto/:id", editarProduto)
+// Rotas de produtos
+router.get("/", listarProdutos);
+router.post("/add-produto", cadastrarProduto);
+router.get("/buscar-produto/:id", buscarProduto);
+router.put("/editar-produto/:id", editarProduto);
+router.delete("/deletar-produto/:id", deletarProduto);
 
-router.delete("/deletar-produto/:id", deletarProduto)
-
-router.get("/buscar-produto/:id", buscarProduto)
-export default router
+export default router;

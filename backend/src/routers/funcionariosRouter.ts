@@ -5,19 +5,22 @@ import { listarFuncionarios } from "../controllers/funcionariosController.js";
 import { buscarFuncionario } from "../controllers/funcionariosController.js";
 import { editarFuncionario } from "../controllers/funcionariosController.js";
 import { deletarFuncionario } from "../controllers/funcionariosController.js";
+import { listarEntregas } from "../controllers/entregasController.js";
 
-const router = Router();
+const router = Router()
 
 router.use(verificarToken);
 
-router.post("/add-funcionario", cadastrarFuncionario);
+router.post("/", cadastrarFuncionario);
 
-router.get("/", listarFuncionarios)
+router.get("/", listarFuncionarios);
 
-router.get("/:id", buscarFuncionario)
+router.get("/:funcionarioId/inventario", listarEntregas);
 
-router.put("/editar-funcionario/:id", editarFuncionario)
+router.get("/:id", buscarFuncionario);
 
-router.delete("/deletar-funcionario", deletarFuncionario)
+router.put("/:id", editarFuncionario);
+
+router.patch("/:id/desativar", deletarFuncionario);
 
 export default router;

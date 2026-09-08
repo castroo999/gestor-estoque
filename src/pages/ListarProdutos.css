@@ -80,3 +80,90 @@ button{
 button:hover{
     transform: scale(1.05);
 }
+
+.item-produto {
+  width: 260px;
+  min-height: 250px;
+  justify-content: flex-start;
+}
+
+.item-produto .tipo-produto {
+  align-self: center;
+  width: fit-content;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.item-produto .tipo-comum {
+  color: #123c3a;
+  background: #d9eee6;
+}
+
+.item-produto .tipo-epi {
+  color: #613600;
+  background: #f4b860;
+}
+
+.item-produto .preco-produto {
+  margin: 0;
+  color: #28643c;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.item-produto .quantidade-produto {
+  display: inline-block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 6px 12px;
+  color: #123c3a;
+  background: #f4b860;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.informacoes-epi {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid #c9ded6;
+  border-radius: 10px;
+  text-align: left;
+  background: #e9f2ee;
+}
+
+.informacoes-epi p {
+  margin: 6px 0;
+  color: #18312f;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.acoes-produto {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.acoes-produto button {
+  flex: 1;
+}
+
+.acoes-produto .botao-deletar {
+  color: white;
+  background: #b42318;
+}
+
+.mensagem-produtos {
+  flex-basis: 100%;
+  color: #f7fbf9;
+  text-align: center;
+}
+
+.mensagem-erro {
+  color: #ffb4ab;
+}

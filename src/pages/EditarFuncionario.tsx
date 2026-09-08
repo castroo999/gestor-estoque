@@ -176,6 +176,10 @@ export default function EditarFuncionario() {
           onChange={(e) => setSetorEditado(e.target.value)}
         />
 
+        <button type="button" onClick={() => navigate("/add-inventario")}>
+          Adicionar ao inventario
+        </button>
+
         {erro && <p>{erro}</p>}
 
         <button type="submit">Salvar Edição</button>

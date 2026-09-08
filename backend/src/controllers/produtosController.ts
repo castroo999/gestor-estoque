@@ -12,6 +12,13 @@ const produtoSelect = {
   nome: true,
   preco: true,
   qnt: true,
+  tipo: true,
+  estoqueMinimo: true,
+  ca: true,
+  validadeCA: true,
+  lote: true,
+  tamanho: true,
+  fabricante: true,
 } as const;
 
 function formatarProduto(produto: {
@@ -197,6 +204,7 @@ export async function editarProduto(
   });
 }
 
+// deletar Produto
 export async function deletarProduto(
   req: Request<{ id: string }>,
   res: Response,

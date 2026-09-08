@@ -69,6 +69,13 @@ export async function registrarEntrega(
     return;
   }
 
+  if (produto.tipo !== "EPI") {
+    res.status(400).json({
+      mensagem: "Somente EPIs podem ser entregues aos funcionários",
+    });
+    return;
+  }
+
   if (produto.qnt < quantidade) {
     res.status(400).json({
       mensagem: "Quantidade insuficiente no estoque",
@@ -139,7 +146,11 @@ export async function registrarEntrega(
 }
 
 // listar entregas
-export async function listarEntregas(req: Request, res: Response) {
+export async function listarEntregas(
+  req: Request<{ funcionarioId: string }>,
+  res: Response,
+) {
+  const { funcionarioId } = req.params;
   const userId = req.userId;
 
   if (!userId) {
@@ -149,12 +160,71 @@ export async function listarEntregas(req: Request, res: Response) {
     return;
   }
 
-  const entregas = await prisma.entregaProduto.findMany({
-    where: {
-      responsavelId: userId,
-    },
-  });
-  res.status(200).json(entregas);
+  try {
+    const funcionario = await prisma.funcionario.findFirst({
+      where: {
+        id: funcionarioId,
+        userId,
+      },
+      select: {
+        id: true,
+        nome: true,
+        matricula: true,
+        cargo: true,
+        setor: true,
+        ativo: true,
+      },
+    });
+
+    if (!funcionario) {
+      res.status(404).json({
+        mensagem: "Funcionário não encontrado",
+      });
+      return;
+    }
+
+    const entregas = await prisma.entregaProduto.findMany({
+      where: {
+        funcionarioId,
+        responsavelId: userId,
+      },
+      include: {
+        produto: {
+          select: {
+            id: true,
+            nome: true,
+            tipo: true,
+            ca: true,
+            validadeCA: true,
+            lote: true,
+            tamanho: true,
+            fabricante: true,
+          },
+        },
+        responsavel: {
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        entregueEm: "desc",
+      },
+    });
+
+    res.status(200).json({
+      funcionario,
+      entregas,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      mensagem: "Erro interno ao carregar o inventário",
+    });
+  }
 }
 
 // editar entrega

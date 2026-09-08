@@ -4,6 +4,7 @@ import produtosRouter from "./routers/produtosRouter.js";
 import entregasRouter from "./routers/entregasRouters.js";
 import userRouter from './routers/userRouters.js';
 import funcionariosRouter from "./routers/funcionariosRouter.js";
+import epiRouters from './routers/epiRouters.js'
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -38,8 +39,11 @@ app.use("/usuarios", userRouter);
 // registra todas as rotas de funcionarios
 app.use("/funcionarios", funcionariosRouter);
 
-// Registra todas as rotas de entregas
+// registra todas as rotas de entregas
 app.use("/entregas", entregasRouter);
+
+// registra todas as rotas de EPIs
+app.use("/epis", epiRouters);
 
 // Executado quando nenhuma rota é encontrada
 app.use((_req: Request, res: Response) => {

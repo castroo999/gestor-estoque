@@ -37,7 +37,7 @@ export default function ListarFuncionarios() {
     if (!confirmou) {
       return;
     }
-    
+
     try {
       await deletarFuncionario(id);
 
@@ -199,9 +199,12 @@ export default function ListarFuncionarios() {
 
             <button
               type="button"
-              >
-                Ver inventário
-              </button>
+              onClick={() =>
+                navigate(`/funcionarios/${funcionario.id}/inventario`)
+              }
+            >
+              Ver inventário
+            </button>
           </article>
         ))}
       </section>

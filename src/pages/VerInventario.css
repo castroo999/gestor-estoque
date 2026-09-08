@@ -1,0 +1,196 @@
+
+.cabecalho-inventario {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.cabecalho-inventario span {
+  color: #f4b860;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cabecalho-inventario h1 {
+  margin: 8px 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  text-transform: capitalize;
+}
+
+.cabecalho-inventario p {
+  margin: 0;
+  color: #c8dbd5;
+}
+
+.cabecalho-inventario button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  color: #123c3a;
+  background: #f4b860;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.cabecalho-inventario button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(244, 184, 96, 0.25);
+}
+
+.lista-inventario {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  );
+  gap: 24px;
+}
+
+.card-inventario {
+  padding: 25px;
+  border: 1px solid rgba(247, 251, 249, 0.25);
+  border-radius: 18px;
+  color: #18312f;
+  background: #f7fbf9;
+  box-shadow: 0 16px 35px rgba(5, 25, 24, 0.35);
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.card-inventario:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 45px rgba(5, 25, 24, 0.45);
+}
+
+.topo-card-inventario {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.topo-card-inventario h2 {
+  margin: 10px 0 0;
+  color: #123c3a;
+  font-size: 1.5rem;
+  text-transform: capitalize;
+}
+
+.etiqueta-epi,
+.status-entrega {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.etiqueta-epi {
+  color: #613600;
+  background: #f4b860;
+}
+
+.status-entrega.entregue {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-entrega.devolvido {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+.dados-inventario {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 13px;
+}
+
+.dados-inventario p {
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  color: #33534f;
+  background: #e8f0ed;
+}
+
+.dados-inventario strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #123c3a;
+}
+
+.observacao-inventario {
+  margin: 20px 0 0;
+  padding: 14px;
+  border-left: 4px solid #f4b860;
+  border-radius: 8px;
+  color: #33534f;
+  background: #fff4dc;
+}
+
+.observacao-inventario strong {
+  color: #123c3a;
+}
+
+.inventario-vazio {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 55px 25px;
+  box-sizing: border-box;
+  border-radius: 18px;
+  color: #18312f;
+  text-align: center;
+  background: #f7fbf9;
+  box-shadow: 0 16px 35px rgba(5, 25, 24, 0.3);
+}
+
+.inventario-vazio h2 {
+  margin: 0 0 10px;
+  color: #123c3a;
+}
+
+.mensagem-inventario {
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  text-align: center;
+  background: linear-gradient(135deg, #123c3a, #18312f);
+}
+
+.pagina-inventario .mensagem-erro {
+  width: fit-content;
+  margin: 70px auto;
+  padding: 15px 20px;
+  border-radius: 9px;
+  color: #991b1b;
+  background: #fee2e2;
+  font-weight: 700;
+}
+
