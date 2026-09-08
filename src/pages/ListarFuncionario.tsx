@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { deletarFuncionario } from "../scripts/deletarFuncionarios";
+import { deletarFuncionario } from "../scripts/DeletarFuncionarios";
 import "./ListarFuncionario.css";
 
 type Funcionario = {
@@ -31,7 +31,7 @@ export default function ListarFuncionarios() {
 
   async function handleDeletarFuncionario(id: string) {
     const confirmou = window.confirm(
-      "Tem certeza que deseja deletar este produto?",
+      "Tem certeza que deseja deletar este funcionário?",
     );
 
     if (!confirmou) {
@@ -196,6 +196,12 @@ export default function ListarFuncionarios() {
             >
               Deletar
             </button>
+
+            <button
+              type="button"
+              >
+                Ver inventário
+              </button>
           </article>
         ))}
       </section>

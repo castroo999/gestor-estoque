@@ -9,6 +9,7 @@ type FuncionarioBody = {
   setor: string;
 };
 
+// cadastrar novo funcionario
 export async function cadastrarFuncionario(
   req: Request<{}, {}, FuncionarioBody>,
   res: Response,
@@ -61,6 +62,7 @@ export async function cadastrarFuncionario(
   });
 }
 
+// listar funcionario
 export async function listarFuncionarios(req: Request, res: Response) {
   const userId = req.userId;
 
@@ -83,6 +85,7 @@ export async function listarFuncionarios(req: Request, res: Response) {
   res.status(200).json(funcionarios);
 }
 
+// buscar funcionario
 export async function buscarFuncionario(
   req: Request<{ id: string }>,
   res: Response,
@@ -116,6 +119,7 @@ export async function buscarFuncionario(
   });
 }
 
+// editar funcionario
 export async function editarFuncionario(
   req: Request<{ id: string }, {}, FuncionarioBody>,
   res: Response,
@@ -171,6 +175,7 @@ export async function editarFuncionario(
   });
 }
 
+// deletar funcionrio
 export async function deletarFuncionario(
   req: Request<{ id: string }>,
   res: Response,
@@ -210,3 +215,5 @@ export async function deletarFuncionario(
     funcionario: funcionarioDeletado,
   });
 }
+
+

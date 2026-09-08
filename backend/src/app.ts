@@ -1,6 +1,7 @@
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
 import produtosRouter from "./routers/produtosRouter.js";
+import entregasRouter from "./routers/entregasRouters.js";
 import userRouter from './routers/userRouters.js';
 import funcionariosRouter from "./routers/funcionariosRouter.js";
 import cors from "cors";
@@ -36,6 +37,9 @@ app.use("/usuarios", userRouter);
 
 // registra todas as rotas de funcionarios
 app.use("/funcionarios", funcionariosRouter);
+
+// Registra todas as rotas de entregas
+app.use("/entregas", entregasRouter);
 
 // Executado quando nenhuma rota é encontrada
 app.use((_req: Request, res: Response) => {

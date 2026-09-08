@@ -4,7 +4,7 @@ export type EntregaProduto = {
   produtoId: string;
   quantidade: number;
   entregueEm: Date;
-  devolvidoEm?: Date;
+  devolvidoEm: Date | null;
   responsavelId: string;
-  observacao?: string;
+  observacao: string | null;
 };
