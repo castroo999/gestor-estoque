@@ -10,7 +10,7 @@ import AddFuncionario from "./pages/AddFuncionario";
 import EditarFuncionario from "./pages/EditarFuncionario";
 import ListarFuncionarios from "./pages/ListarFuncionario";
 import AddInventario from "./pages/AddInventario";
-import VerInventario from './pages/verInventario';
+import VerInventario from './pages/VerInventario';
 
 export default function App() {
   return (
