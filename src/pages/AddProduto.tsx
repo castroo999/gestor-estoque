@@ -10,11 +10,9 @@ const API_URL =
 
 export default function AddProduto() {
   const [tipo, setTipo] = useState<TipoProduto>("COMUM");
-
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [qnt, setQnt] = useState("");
-
   const [estoqueMinimo, setEstoqueMinimo] = useState("");
   const [ca, setCa] = useState("");
   const [validadeCA, setValidadeCA] = useState("");
